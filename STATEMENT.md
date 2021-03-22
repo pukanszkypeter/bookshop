@@ -1,6 +1,6 @@
 # Nyilatkozat
 
-Én, <Pukánszky Péter> (Neptun kód: <ZIUHLD>) kijelentem, hogy ezt a megoldást én küldtem be a Szerveroldali webprogramozás Laravel beadandó feladatához. 
+Én, Pukánszky Péter (Neptun kód: ZIUHLD) kijelentem, hogy ezt a megoldást én küldtem be a Szerveroldali webprogramozás Laravel beadandó feladatához. 
 A feladat beadásával elismerem, hogy tudomásul vettem a nyilatkozatban foglaltakat.
 
 - Kijelentem, hogy ez a megoldás a saját munkám.

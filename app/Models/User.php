@@ -20,6 +20,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'is_librarian'
     ];
 
     /**
@@ -29,7 +30,7 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password',
-        'remember_token',
+        'remember_token'
     ];
 
     /**
@@ -40,4 +41,19 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    // User 1-N Borrow - reader
+    public function borrows() {
+        return $this->hasMany(Borrow::class, 'reader_id');
+    }
+
+    // User 1-N Borrow - request_manager
+    public function requests() {
+        return $this->hasMany(Borrow::class, 'request_managed_by');
+    }
+
+    // User 1-N Borrow - return_manager
+    public function returns() {
+        return $this->hasMany(Borrow::class, 'return_managed_by');
+    }
 }
