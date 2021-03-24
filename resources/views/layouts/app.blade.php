@@ -7,7 +7,8 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('My Bookshop', 'My Bookshop') }}</title>
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset("images/logo.png") }}" />
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -21,10 +22,11 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-md navbar-light shadow-sm" style="background-color: #ffdd99;">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
+                    <img width="30px" src="{{ asset("images/logo.png") }}">
+                    {{ config('My Bookshop', 'My Bookshop') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -45,7 +47,7 @@
                                     <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                                 </li>
                             @endif
-                            
+
                             @if (Route::has('register'))
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
@@ -78,6 +80,25 @@
         <main class="py-4">
             @yield('content')
         </main>
+
+        <footer>
+            <div class="container mb-4">
+                <hr style="background-color: #ffdd99;">
+                <div class="d-flex flex-column align-items-center">
+                    <div>
+                        <span class="small">Basic Bookshop</span>
+                        <span class="mx-1">·</span>
+                        <span class="small">Laravel {{ app()->version() }}</span>
+                        <span class="mx-1">·</span>
+                        <span class="small">PHP {{ phpversion() }}</span>
+                    </div>
+
+                    <div>
+                        <span class="small">Serverside webprogramming 2020-21-2</span>
+                    </div>
+                </div>
+            </div>
+        </footer>
     </div>
 </body>
 </html>

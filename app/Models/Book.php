@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use DateTime;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -67,11 +68,13 @@ class Book extends Model
 
     // Cover Image URL
     public function imageURL() {
-        if ($this->cover_image != NULL) {
-            return $this->cover_image;
-        } else {
-            return "{{ asset(images/book-cover.png) }}";
-        }
+        return $this->cover_image;
+    }
+
+    // Format Date
+    public function dateFormat() {
+        $date = new DateTime($this->released_at);
+        return date_format($date, 'Y. m. d.');
     }
 
 }

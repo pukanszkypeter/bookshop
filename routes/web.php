@@ -2,6 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 
+// Controllers
+use App\Http\Controllers\BookController;
+use App\Http\Controllers\GenreController;
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,10 +18,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::resources([
+    'books' => BookController::class,
+    'genres' => GenreController::class,
+]);
+
 Route::get('/', function () {
-    return view('home');
+    return redirect()->route('books.index');
+});
+
+Route::get('/home', function () {
+    return redirect()->route('books.index');
 });
 
 Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

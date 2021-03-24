@@ -23,21 +23,21 @@ class Borrow extends Model
 
     // Book 1-N Borrow
     public function book() {
-        return $this->belongsTo(Book::class);
+        return $this->belongsTo(Book::class, 'book_id');
     }
 
     // User 1-N Borrow - reader
     public function reader() {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'reader_id');
     }
 
     // User 1-N Borrow - request_manager
     public function request_manager() {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'request_managed_by');
     }
 
     // User 1-N Borrow - return_manager
     public function return_manager() {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'return_managed_by');
     }
 }
