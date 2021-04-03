@@ -66,4 +66,17 @@ class User extends Authenticatable
             return false;
         }
     }
+
+    // Get Readers
+    public static function readers() {
+        $all = User::all();
+        $counter = 0;
+        foreach($all as $al) {
+            if (!$al->isLibrarian()) {
+                $counter = $counter + 1;
+            }
+        }
+        return $counter;
+    }
+
 }

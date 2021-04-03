@@ -51,6 +51,10 @@ return [
             'url' => env('AWS_URL'),
             'endpoint' => env('AWS_ENDPOINT'),
         ],
+        'book_covers' => [
+            'driver' => 'local',
+            'root'   => public_path() . '/images/book_covers',
+        ],
 
     ],
 

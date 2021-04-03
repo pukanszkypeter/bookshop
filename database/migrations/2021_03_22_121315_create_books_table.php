@@ -25,6 +25,8 @@ class CreateBooksTable extends Migration
             $table->string('isbn', 13)->unique();
             $table->integer('in_stock');
             $table->timestamps();
+            $table->string('attachment_original_name', 255)->nullable();
+            $table->string('attachment_hash_name', 255)->nullable();
         });
     }
 

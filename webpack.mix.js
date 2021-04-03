@@ -11,6 +11,11 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js')
+mix
+    // Font Awesome Free
+    .sass('resources/sass/fa.scss', 'public/css')
+    .copy('node_modules/@fortawesome/fontawesome-free/webfonts', 'public/webfonts')
+    // Laravel
+    .js('resources/js/app.js', 'public/js')
     .sass('resources/sass/app.scss', 'public/css')
     .sourceMaps();

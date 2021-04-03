@@ -19,7 +19,9 @@ class Book extends Model
         'pages',
         'language_code',
         'isbn',
-        'in_stock'
+        'in_stock',
+        'attachment_original_name',
+        'attachment_hash_name'
     ];
 
     // Book N-N Genre
@@ -32,6 +34,18 @@ class Book extends Model
         return $this->hasMany(Borrow::class, 'book_id');
     }
 
+    // Available Books Count
+    public static function availableBooks() {
+        $books = Book::all();
+        $counter = 0;
+        foreach($books as $book) {
+            if ($book->isAvailable()) {
+                $counter = $counter + 1;
+            }
+        }
+        return $counter;
+    }
+
     // ACCEPTED Borrows
     public function getAcceptedBorrows() {
         $list = $this->borrows()->get();
@@ -42,6 +56,19 @@ class Book extends Model
             }
         }
         return $accepted;
+    }
+
+    // ACCEPTED Borrows Count
+    public function getAcceptedBorrowsCount() {
+        $list = $this->borrows()->get();
+        $accepted = [];
+        foreach ($list as $li) {
+            if ($li->status == 'ACCEPTED') {
+                array_push($accepted, $li);
+            }
+        }
+        $length = count($accepted);
+        return $length;
     }
 
     // Available Counts
@@ -67,8 +94,8 @@ class Book extends Model
     }
 
     // Cover Image URL
-    public function imageURL() {
-        return $this->cover_image;
+    public function hasAttachment() {
+        return $this->attachment_hash_name;
     }
 
     // Format Date
