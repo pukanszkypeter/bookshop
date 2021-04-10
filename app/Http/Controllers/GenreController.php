@@ -10,7 +10,7 @@ use Illuminate\Pagination\Paginator;
 class GenreController extends Controller
 {
 
-    const styles = ['primary','secondary','success','danger','warning','info','light'];
+    const styles = ['primary','secondary','success','danger','warning','info','light', 'dark'];
 
     /**
      * Display a listing of the resource.

@@ -35,13 +35,11 @@ class BookFactory extends Factory
             'authors' => $names,
             'description' => $this->faker->sentence(),
             'released_at' => $this->faker->date('Y-m-d'),
-            'cover_image' => 'book.png',
+            'cover_image' => null,
             'pages' => $this->faker->numberBetween(20,600),
             'language_code' => $this->faker->languageCode,
             'isbn' => $this->faker->numerify('#############'),
-            'in_stock' => $this->faker->numberBetween(1,10),
-            'attachment_original_name' => null,
-            'attachment_hash_name' => null,
+            'in_stock' => $this->faker->numberBetween(1,10)
         ];
     }
 }

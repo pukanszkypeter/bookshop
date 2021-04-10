@@ -19,9 +19,7 @@ class Book extends Model
         'pages',
         'language_code',
         'isbn',
-        'in_stock',
-        'attachment_original_name',
-        'attachment_hash_name'
+        'in_stock'
     ];
 
     // Book N-N Genre
@@ -93,9 +91,26 @@ class Book extends Model
         }
     }
 
-    // Cover Image URL
+    // Has Attachment
     public function hasAttachment() {
-        return $this->attachment_hash_name;
+
+        if ($this->cover_image == null) {
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+
+    // Cover URL
+    public function coverURL() {
+
+        if ($this->cover_image == null) {
+            return 'images/book_covers/book.png';
+        } else {
+            return 'images/book_covers/' . $this->cover_image;
+        }
+
     }
 
     // Format Date

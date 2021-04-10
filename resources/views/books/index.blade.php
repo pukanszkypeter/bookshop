@@ -67,7 +67,7 @@
                             @if ($book->getAvaliableCount() <= 0)
                                 <img class="card-img-top" height="145px" src={{ asset('images/book_covers/sold-out.png') }} alt="Card image cap">
                             @else
-                                <img class="card-img-top" height="145px" src={{ $book->hasAttachment() ? asset('images/book_covers/' . $book->attachment_hash_name) : asset('images/book_covers/' . $book->cover_image) }} alt="Card image cap">
+                                <img class="card-img-top" height="145px" src={{ asset($book->coverURL()) }} alt="Card image cap">
                             @endif
                             <div class="card-body">
                                 <div class="mb-2">

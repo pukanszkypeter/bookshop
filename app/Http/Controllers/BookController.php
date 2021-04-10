@@ -51,7 +51,7 @@ class BookController extends Controller
                 'authors' => 'required|min:3|max:255',
                 'released_at' => 'required|date|before:today',
                 'pages' => 'required|integer|min:1|max:3000',
-                'isbn' => 'required|regex:/^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$/i',
+                'isbn' => 'required|regex:/^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$/i|unique:books',
                 'description' => 'nullable',
                 'genres' => 'nullable',
                 'genres.*' => 'integer|distinct|exists:genres,id',
@@ -64,18 +64,17 @@ class BookController extends Controller
                 'integer' => 'The :attribute field must be a number.',
                 'attachment.max' => 'The file size can only be max 1 MB.',
                 'released_at.before' => 'Release date can only be in the past.',
+                'unique' => 'This ISBN already exists.',
             ]
         );
 
         if ($request->hasFile('attachment')) {
 
             $file = $request->file('attachment');
-            $hashName = $file->hashName();
-            $originalName = $file->getClientOriginalName();
-            Storage::disk('book_covers')->put('/' . $hashName, $file->get());
-            $validated['cover_image'] = 'book.png';
-            $validated['attachment_hash_name'] = $hashName;
-            $validated['attachment_original_name'] = $originalName;
+            $nextID = Book::all()->last()->id + 1;
+            $fileName = 'cover_' . $nextID . '.' . $file->extension();
+            Storage::disk('book_covers')->put('/' . $fileName, $file->get());
+            $validated['cover_image'] = $fileName;
 
         }
 
@@ -127,7 +126,7 @@ class BookController extends Controller
                 'authors' => 'required|min:3|max:255',
                 'released_at' => 'required|date|before:today',
                 'pages' => 'required|integer|min:1|max:3000',
-                'isbn' => 'required|regex:/^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$/i',
+                'isbn' => 'required|regex:/^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$/i|unique:books,' . $book->id,
                 'description' => 'nullable',
                 'genres' => 'nullable',
                 'genres.*' => 'integer|distinct|exists:genres,id',
@@ -141,28 +140,24 @@ class BookController extends Controller
                 'integer' => 'The :attribute field must be a number.',
                 'attachment.max' => 'The file size can only be max 1 MB.',
                 'released_at.before' => 'Release date can only be in the past.',
+                'unique' => 'This ISBN already exists.',
             ]
         );
 
         if($request->remove_cover == 1) {
-            $validated['attachment_original_name'] = null;
-            $validated['attachment_hash_name'] = null;
-            Storage::disk('book_covers')->delete('/' . $book->hasAttachment());
+            Storage::disk('book_covers')->delete('/' . $book->cover_image);
+            $validated['cover_image'] = null;
         }
 
         if ($request->hasFile('attachment')) {
             if($book->hasAttachment()) {
-                $validated['attachment_original_name'] = null;
-                $validated['attachment_hash_name'] = null;
-                Storage::disk('book_covers')->delete('/' . $book->hasAttachment());
+                Storage::disk('book_covers')->delete('/' . $book->cover_image);
+                $validated['cover_image'] = null;
             }
             $file = $request->file('attachment');
-            $hashName = $file->hashName();
-            $originalName = $file->getClientOriginalName();
-            Storage::disk('book_covers')->put('/' . $hashName, $file->get());
-            $validated['cover_image'] = 'book.png';
-            $validated['attachment_hash_name'] = $hashName;
-            $validated['attachment_original_name'] = $originalName;
+            $fileName = 'cover_' . $book->id . '.' . $file->extension();
+            Storage::disk('book_covers')->put('/' . $fileName, $file->get());
+            $validated['cover_image'] = $fileName;
 
         }
 
@@ -185,7 +180,7 @@ class BookController extends Controller
     {
         $book = Book::findOrFail($id);
         if ($book->hasAttachment()) {
-            Storage::disk('book_covers')->delete('/' . $book->hasAttachment());
+            Storage::disk('book_covers')->delete('/' . $book->cover_image);
         }
         $book->delete();
 

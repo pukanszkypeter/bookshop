@@ -149,7 +149,7 @@
             <label class="col-sm-2 col-form-label">Cover Image</label>
             <div class="col-sm-10">
                 <a type="button" data-toggle="modal" data-target="#exampleModal">
-                    <img id="book-cover-preview" height="145px" src={{ $book->hasAttachment() ? asset('images/book_covers/' . $book->attachment_hash_name) : asset('images/book_covers/' . $book->cover_image) }}>
+                    <img id="book-cover-preview" height="145px" src={{ asset($book->coverURL()) }}>
                 </a>
                 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -163,7 +163,7 @@
                         <div class="modal-body">
                             <div class="container-fluid">
                                 <div class="row justify-content-center">
-                                    <img id="book-cover-preview" height="250px" src={{ $book->hasAttachment() ? asset('images/book_covers/' . $book->attachment_hash_name) : asset('images/book_covers/' . $book->cover_image) }}>
+                                    <img id="book-cover-preview" height="250px" src={{ asset($book->coverURL()) }}>
                                 </div>
                             </div>
                         </div>
