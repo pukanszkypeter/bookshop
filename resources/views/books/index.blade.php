@@ -58,6 +58,21 @@
 
     <div class="row mt-3">
         <div class="col-12 col-lg-9">
+        @if (Session::has('book-deleted'))
+        <div id="book-deleted" class="alert alert-danger" role="alert">
+            The book called <span id="book-name"><strong>{{ Session::get('book-deleted') }}</strong></span> has been successfully deleted!
+        </div>
+        @endif
+        @if (Session::has('book-delete-failed'))
+        <div id="book-delete-failed" class="alert alert-warning" role="alert">
+            This book has <strong>{{ Session::get('book-delete-failed') }}</strong> borrow. Please handle them before deleting!
+        </div>
+        @endif
+        @if (Session::has('genre-deleted'))
+        <div id="genre-deleted" class="alert alert-danger" role="alert">
+            The genre called <strong><span id="genre-name">{{ Session::get('genre-deleted') }}</span></strong> has been successfully deleted!
+        </div>
+        @endif
             <div id="books" class="row">
                 @forelse ($books as $book)
                     <div class="col-12 col-md-6 col-lg-4 mb-3 d-flex align-items-strech">

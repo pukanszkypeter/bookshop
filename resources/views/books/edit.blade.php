@@ -56,6 +56,18 @@
         </div>
 
         <div class="form-group row">
+            <label for="language_code" class="col-sm-2 col-form-label">Language*</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control @error('language_code') is-invalid @enderror" id="language_code" name="language_code" placeholder="Book's language" value="{{ old('language_code') }}">
+                @error('language_code')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                @enderror
+            </div>
+        </div>
+
+        <div class="form-group row">
             <label for="pages" class="col-sm-2 col-form-label">Pages*</label>
             <div class="col-sm-10">
                 <input type="number" class="form-control @error('pages') is-invalid @enderror" placeholder="Book's pages" id="pages" name="pages"  value="{{ old('pages') ? old('pages') : $book->pages }}">

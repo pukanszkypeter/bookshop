@@ -7,9 +7,9 @@
         <div class="col-12 col-md-8">
             <h1 id="book-title">{{ $book->title }}</h1>
 
-            <div id="book-categories" class="mb-2">
+            <div id="book-genres" class="mb-2">
                 @foreach($book->genres as $genre)
-                    <a href="#" class="badge badge-{{ $genre->style }}">{{ $genre->name }}</a>
+                    <a href="{{ route('genres.show', $genre) }}" class="badge badge-{{ $genre->style }}">{{ $genre->name }}</a>
                 @endforeach
             </div>
 

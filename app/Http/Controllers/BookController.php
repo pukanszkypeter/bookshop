@@ -50,6 +50,7 @@ class BookController extends Controller
                 'title' => 'required|min:3|max:255',
                 'authors' => 'required|min:3|max:255',
                 'released_at' => 'required|date|before:today',
+                'language_code' => 'required|min:2|max:2',
                 'pages' => 'required|integer|min:1|max:3000',
                 'isbn' => 'required|regex:/^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$/i|unique:books',
                 'description' => 'nullable',
@@ -61,6 +62,7 @@ class BookController extends Controller
             [
                 'required' => 'The :attribute field is required.',
                 'min' => 'The :attribute field must be at least: :min long.',
+                'max' => 'The :attribute field must be max: :max long.',
                 'integer' => 'The :attribute field must be a number.',
                 'attachment.max' => 'The file size can only be max 1 MB.',
                 'released_at.before' => 'Release date can only be in the past.',
@@ -125,6 +127,7 @@ class BookController extends Controller
                 'title' => 'required|min:3|max:255',
                 'authors' => 'required|min:3|max:255',
                 'released_at' => 'required|date|before:today',
+                'language_code' => 'required|min:2|max:2',
                 'pages' => 'required|integer|min:1|max:3000',
                 'isbn' => 'required|regex:/^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$/i|unique:books,' . $book->id,
                 'description' => 'nullable',
@@ -137,6 +140,7 @@ class BookController extends Controller
             [
                 'required' => 'The :attribute field is required.',
                 'min' => 'The :attribute field must be at least: :min long.',
+                'max' => 'The :attribute field must be max: :max long.',
                 'integer' => 'The :attribute field must be a number.',
                 'attachment.max' => 'The file size can only be max 1 MB.',
                 'released_at.before' => 'Release date can only be in the past.',
@@ -176,14 +180,24 @@ class BookController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        $book = Book::findOrFail($id);
-        if ($book->hasAttachment()) {
-            Storage::disk('book_covers')->delete('/' . $book->cover_image);
-        }
-        $book->delete();
+        $book = Book::find($id);
 
-        return redirect()->route('books.index');
+        if ($book->borrows()->count() > 0) {
+            $request->session()->flash('book-delete-failed', $book->borrows()->count());
+            return redirect()->route('books.index');
+        }
+        else {
+            if ($book->hasAttachment()) {
+                Storage::disk('book_covers')->delete('/' . $book->cover_image);
+            }
+            $title = $book->title;
+            $book->delete();
+
+            $request->session()->flash('book-deleted', $title);
+            return redirect()->route('books.index');
+        }
+
     }
 }

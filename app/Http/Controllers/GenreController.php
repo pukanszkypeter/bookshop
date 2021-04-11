@@ -114,11 +114,13 @@ class GenreController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $genre = Genre::findOrFail($id);
+        $name = $genre->name;
         $genre->delete();
 
+        $request->session()->flash('genre-deleted', $name);
         return redirect()->route('books.index');
     }
 }
