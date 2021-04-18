@@ -134,9 +134,9 @@
                     </div>
                 </div>
 
-                <div class="col-12 mb-3">
+                <div class="col-12 mb-3 genres-list">
                     <div class="card bg-light">
-                        <div class="card-body genres-list">
+                        <div class="card-body">
                             <h5 class="card-title mb-2">Genres</h5>
                             <p class="small">View books for a specific genre.</p>
                             @forelse ($genres as $genre)

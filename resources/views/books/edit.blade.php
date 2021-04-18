@@ -11,7 +11,7 @@
 
     @if (Session::has('book-updated'))
         <div id="book-updated" class="alert alert-success" role="alert">
-            The book called <span id="book-name"><strong>{{ Session::get('book-updated') }}</strong></span> has been successfully updated!
+            The book called <span id="book-title"><strong>{{ Session::get('book-updated') }}</strong></span> has been successfully updated!
         </div>
     @endif
 
@@ -58,7 +58,7 @@
         <div class="form-group row">
             <label for="language_code" class="col-sm-2 col-form-label">Language*</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control @error('language_code') is-invalid @enderror" id="language_code" name="language_code" placeholder="Book's language" value="{{ old('language_code') }}">
+                <input type="text" class="form-control @error('language_code') is-invalid @enderror" id="language_code" name="language_code" placeholder="Book's language" value="{{ old('language_code') ? old('language_code') : $book->language_code }}">
                 @error('language_code')
                     <div class="invalid-feedback">
                         {{ $message }}
