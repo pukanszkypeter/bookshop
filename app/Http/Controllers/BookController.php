@@ -200,4 +200,39 @@ class BookController extends Controller
         }
 
     }
+
+    /**
+     * Search for Books.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request) {
+
+        $validated = $request->validate(
+            [
+                'search' => 'required|max:255',
+            ],
+            [
+                'required' => 'The :attribute field is required.',
+                'max' => 'The :attribute field must be max: :max long.',
+            ]
+        );
+
+        // Get the search value from the request
+        $search = $request->input('search');
+
+        // Search in the title and body columns from the posts table
+        $books = Book::query()
+        ->where('title', 'LIKE', "%{$search}%")
+        ->get();
+
+        $genres = Genre::all();
+        $usersCount = User::readers();
+        $booksCount = Book::count(); //availableCount();
+        $genresCount = Genre::count();
+
+        // Return the search view with the resluts compacted
+        return view('books.search', ['books' => $books, 'search' => $search, 'genres' => $genres, 'usersCount' => $usersCount, 'booksCount' => $booksCount, 'genresCount' => $genresCount]);
+
+    }
 }

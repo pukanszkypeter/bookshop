@@ -21,6 +21,7 @@ class BorrowSeeder extends Seeder
         Borrow::create([ // PENDING
             'reader_id' => 1,
             'book_id' => 4,
+            'reader_message' => NULL,
             'status' => $possible_status[0],
             'request_processed_at' => NULL,
             'request_managed_by' => NULL,
@@ -37,6 +38,7 @@ class BorrowSeeder extends Seeder
         Borrow::create([ // ACCEPTED
             'reader_id' => 3,
             'book_id' => 15,
+            'reader_message' => NULL,
             'status' => $possible_status[1],
             'request_processed_at' => $date,
             'request_managed_by' => 7,
@@ -49,6 +51,7 @@ class BorrowSeeder extends Seeder
         Borrow::create([ // ACCEPTED
             'reader_id' => 4,
             'book_id' => 15,
+            'reader_message' => NULL,
             'status' => $possible_status[1],
             'request_processed_at' => $date,
             'request_managed_by' => 6,
@@ -61,6 +64,7 @@ class BorrowSeeder extends Seeder
         Borrow::create([ // REJECTED
             'reader_id' => 5,
             'book_id' => 10,
+            'reader_message' => NULL,
             'status' => $possible_status[2],
             'request_processed_at' => $date,
             'request_managed_by' => 9,
@@ -73,6 +77,7 @@ class BorrowSeeder extends Seeder
         Borrow::create([ // RETURNED
             'reader_id' => 4,
             'book_id' => 12,
+            'reader_message' => NULL,
             'status' => $possible_status[3],
             'request_processed_at' => $date,
             'request_managed_by' => 6,

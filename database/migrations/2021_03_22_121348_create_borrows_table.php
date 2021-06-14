@@ -19,6 +19,7 @@ class CreateBorrowsTable extends Migration
             $table->foreign('reader_id')->references('id')->on('users');
             $table->unsignedBigInteger('book_id');
             $table->foreign('book_id')->references('id')->on('books');
+            $table->string('reader_message', 255)->nullable();
             $table->enum('status', ['PENDING', 'ACCEPTED', 'REJECTED', 'RETURNED']);
             $table->dateTime('request_processed_at')->nullable();
             $table->unsignedBigInteger('request_managed_by')->nullable();

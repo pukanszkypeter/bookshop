@@ -25,4 +25,14 @@ class HomeController extends Controller
     {
         return view('home');
     }
+
+    public function reader()
+    {
+        return view('reader.index');
+    }
+
+    public function librarian()
+    {
+        return view('librarian.index');
+    }
 }

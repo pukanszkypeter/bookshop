@@ -1,11 +1,11 @@
 @extends('layouts.app')
-@section('title', 'Books')
+@section('title', 'Search Page')
 
 @section('content')
 <div class="container">
     <div class="row justify-content-between">
         <div class="col-12 col-md-8">
-            <h1>Welcome to <b>My Bookshop!</b></h1>
+            <h1>Search Page</h1>
         </div>
     </div>
     <br>
@@ -43,39 +43,23 @@
     <br>
     <div class="row justify-content-between">
         <div class="col-12 col-md-8">
-            <h3 class="mb-1">All Books</h3>
+            <h3 class="mb-1">Search results for the given word: <span class="badge rounded-pill bg-primary text-white">{{$search}}</h3>
         </div>
         <div class="col-12 col-md-4">
             @auth
-            @if(Auth::user()->isLibrarian())
                 <div class="py-md-3 text-md-right">
                     <p class="my-1">Available options:</p>
                     <a id="create-book-btn" href="{{ route('books.create') }}" role="button" class="btn btn-sm btn-primary mb-1"><i class="fas fa-plus-circle"></i> New book</a>
                     <a id="create-genre-btn" href="{{ route('genres.create') }}" role="button" class="btn btn-sm btn-primary mb-1"><i class="fas fa-plus-circle"></i> New genre</a>
                 </div>
-            @endif
             @endauth
         </div>
     </div>
 
     <div class="row mt-3">
         <div class="col-12 col-lg-9">
-        @if (Session::has('book-deleted'))
-        <div id="book-deleted" class="alert alert-danger" role="alert">
-            The book called <span id="book-name"><strong>{{ Session::get('book-deleted') }}</strong></span> has been successfully deleted!
-        </div>
-        @endif
-        @if (Session::has('book-delete-failed'))
-        <div id="book-delete-failed" class="alert alert-warning" role="alert">
-            This book has <strong>{{ Session::get('book-delete-failed') }}</strong> borrow. Please handle them before deleting!
-        </div>
-        @endif
-        @if (Session::has('genre-deleted'))
-        <div id="genre-deleted" class="alert alert-danger" role="alert">
-            The genre called <strong><span id="genre-name">{{ Session::get('genre-deleted') }}</span></strong> has been successfully deleted!
-        </div>
-        @endif
             <div id="books" class="row">
+                @if (count($books) > 0)
                 @forelse ($books as $book)
                     <div class="col-12 col-md-6 col-lg-4 mb-3 d-flex align-items-strech">
                         <div class="card w-100 book" @if ($book->getAvaliableCount() <= 0)
@@ -110,15 +94,16 @@
                     </div>
                 @empty
                 @endforelse
+                @else
+                    <div class="p-3" style="margin-top: -1rem">
+                        <div class="alert alert-danger" role="alert">
+                            No matching books were found for the specified keyword.
+                        </div>
+                    </div>
+                @endif
             </div>
-
-            <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center">
-                    {{ $books->links() }}
-                </ul>
-            </nav>
-
         </div>
+
         <div class="col-12 col-lg-3">
             <div class="row">
                 <div class="col-12 mb-3">

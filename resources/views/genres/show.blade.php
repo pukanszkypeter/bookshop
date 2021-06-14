@@ -22,6 +22,7 @@
         </div>
 
         @auth
+        @if(Auth::user()->isLibrarian())
         <div id="genre-actions" class="col-12 col-md-4">
             <div class="py-md-3 text-md-right">
                 <p class="my-1">Genre managment:</p>
@@ -33,6 +34,7 @@
                 </form>
             </div>
         </div>
+        @endif
         @endauth
 
         <div class="row mt-3">

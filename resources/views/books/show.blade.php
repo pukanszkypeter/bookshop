@@ -16,6 +16,12 @@
             <div class="mb-3">
                 <a id="all-books-ref" href="{{ route('books.index') }}" class="btn btn-primary btn-sm"><i class="fas fa-long-arrow-alt-left"></i> All Books</a>
             </div>
+            @if (Session::has('borrow-created'))
+                <div class="alert alert-success" role="alert">
+                    The book called <strong>{{ Session::get('borrow-created') }}</strong> has been successfully borrowed!
+                    For more information, click on the following link: <a href="{{ route('reader.borrows.index.pending') }}">My rentals</a>.
+                </div>
+            @endif
             <br>
             <h3>Book details</h3>
             <ul class="list-group list-group-flush">
@@ -63,12 +69,16 @@
         <div id="book-actions" class="col-12 col-md-4">
             <div class="py-md-3 text-md-right">
                 <p class="my-1">Book managment:</p>
+                @if(Auth::user()->isLibrarian())
                 <form action="{{ url('books', $book->id) }}" method="POST">
                     <a id="edit-book-btn" href="{{ route('books.edit', $book) }}" role="button" class="btn btn-sm btn-primary"><i class="far fa-edit"></i> Modify</a>
                     @csrf
                     {{ method_field('DELETE') }}
                     <button id="delete-book-btn" type="submit" class="btn btn-sm btn-danger"><i class="far fa-trash-alt"></i> Delete</button>
                 </form>
+                @else
+                    <a href="{{ route('reader.borrows.create', $book) }}" role="button" class="btn btn-sm btn-primary"><i class="far fa-edit"></i> Loan</a>
+                @endif
             </div>
         </div>
         @endauth

@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Book;
 
 class User extends Authenticatable
 {
@@ -77,6 +78,77 @@ class User extends Authenticatable
             }
         }
         return $counter;
+    }
+
+    // Already Borrowed
+    public function isAlreadyBorrowed(Book $book) {
+
+        $result = false;
+
+        $borrows = $this->borrows;
+        foreach($borrows as $borrow) {
+            if ($borrow->book_id == $book->id) {
+                if($borrow->status == 'ACCEPTED' || $borrow->status == 'PENDING') {
+                    $result = true;
+                }
+            }
+        }
+
+        return $result;
+    }
+
+    public function getBorrowsByStatus(String $status) {
+        $borrows = $this->borrows();
+
+        if ($status == 'PENDING') {
+
+            return $borrows->where('status', 'PENDING')->get();
+
+        }
+        else if ($status == 'ACCEPTED') {
+
+            return $borrows->where('status', 'ACCEPTED')->get();
+
+        }
+        else if ($status == 'RETURNED') {
+
+            return $borrows->where('status', 'RETURNED')->get();
+
+        }
+        else if ($status == 'REJECTED') {
+
+            return $borrows->where('status', 'REJECTED')->get();
+
+        }
+    }
+
+    public function getDelayedBorrows() {
+
+        $borrows = $this->getBorrowsByStatus('ACCEPTED');
+        $delayedBorrows = [];
+        $dateNow = date('Y.m.d');
+
+        for($i = 0; $i < $borrows->count(); $i++) {
+            if ( $borrows[$i]->deadline < $dateNow ) {
+                array_push($delayedBorrows, $borrows[$i]);
+            }
+        }
+
+        return $delayedBorrows;
+    }
+
+    public function getDelayedBorrowsFromPast() {
+
+        $borrows = $this->getBorrowsByStatus('RETURNED');
+        $delayedBorrows = [];
+
+        for($i = 0; $i < $borrows->count(); $i++) {
+            if ( $borrows[$i]->deadline < $borrows[$i]->returned_at ) {
+                array_push($delayedBorrows, $borrows[$i]);
+            }
+        }
+
+        return $delayedBorrows;
     }
 
 }
